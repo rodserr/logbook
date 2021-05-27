@@ -6,14 +6,14 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-26T22:12:37+00:00"
+      "last_modified": "2021-05-27T04:17:58+00:00"
     },
     {
       "path": "index.html",
       "title": "rodserr Logbook",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-26T22:12:37+00:00"
+      "last_modified": "2021-05-27T04:17:58+00:00"
     }
   ],
   "collections": ["posts/posts.json"]

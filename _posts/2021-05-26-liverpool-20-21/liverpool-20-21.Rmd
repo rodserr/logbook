@@ -1,0 +1,304 @@
+---
+title: "Liverpool 20-21"
+description: |
+  Analysis of 20/21 season of Liverpool FC
+author:
+  - name: Rodrigo Serrano
+    url: https://example.com/norajones
+date: 2021-05-26
+citation: false
+preview: images/liverpool-logo.png
+categories:
+  - soccer
+  - descriptives
+output:
+  distill::distill_article:
+    self_contained: false
+    # fig_width: 8
+    # fig_height: 5
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	fig.align = "center",
+	message = FALSE,
+	warning = FALSE,
+	fig.showtext = T,
+	layout = "l-body-outset",
+	fig.width = 6, fig.height = 3
+)
+
+
+.aqua <- '#0ea89f' 
+.red <- '#cc041e'
+.red2 <- '#840404'
+.gold <- '#c0ac64' 
+
+ggplot2::theme_set(ggplot2::theme_minimal())
+thematic::thematic_on(
+  bg = 'white', fg = 'black',
+  accent = .aqua,
+  sequential = c(.red, .aqua),
+  qualitative = c(.red, .aqua, .gold, .red2),
+  font = thematic::font_spec('Molengo')
+)
+
+```
+
+```{r libraries}
+library(tidyverse)
+library(understatr)
+library(ggsoccer)
+```
+
+```{r read_csv, include=FALSE}
+# epl <- read_csv('_posts/2021-05-26-liverpool-20-21/epl.csv')
+# match_shots <- read_csv('_posts/2021-05-26-liverpool-20-21/match_shots.csv')
+# new_players <- read_csv('_posts/2021-05-26-liverpool-20-21/new_players.csv')
+# fabinho <- read_csv('_posts/2021-05-26-liverpool-20-21/fabinho.csv')
+# lfc_players <- read_csv('_posts/2021-05-26-liverpool-20-21/lfc_players.csv')
+
+epl <- read_csv('epl.csv')
+match_shots <- read_csv('match_shots.csv')
+new_players <- read_csv('new_players.csv')
+fabinho <- read_csv('fabinho.csv')
+lfc_players <- read_csv('lfc_players.csv')
+```
+
+## Seasons
+
+```{r get_league, eval = FALSE}
+
+epl <- list(2020, 2019, 2018) %>%
+  map_df(~get_league_teams_stats('EPL', year = .x))
+```
+
+```{r season_comparison}
+lfc_matches <- epl %>% filter(team_name == 'Liverpool') 
+
+lfc_matches %>% 
+  arrange(date) %>%
+  group_by(year = as_factor(year)) %>% 
+  transmute(
+    cm_pts = cumsum(pts),
+    match = 1:n()
+  ) %>% 
+  ggplot(
+    aes(x = match, y = cm_pts, color = year, alpha = (year != 2020))
+  ) +
+  geom_line() +
+  scale_alpha_manual(values = c(1, .3), guide = FALSE)
+  
+lfc_matches %>% 
+  mutate(miss_matches = (xG > xGA) & result != 'w') %>% 
+  group_by(year) %>% 
+  summarise(mm = sum(miss_matches))
+```
+
+## Player Seasons
+
+```{r get_players_stats, eval = FALSE}
+lfc_players <- list(2020, 2019, 2018) %>% 
+  map_df(~get_team_players_stats('Liverpool', year = .x))
+```
+
+
+```{r attackers, fig.width = 8}
+# Attackers
+main_FW <- lfc_players %>% 
+  filter(player_id %in% c(1250, 838, 482))
+
+main_FW %>% 
+  transmute(
+    player_name, year,
+    GA_90m = ((npg+assists)/time)*90,
+    xGA_90m = ((npxG+xA)/time)*90
+  ) %>%
+  pivot_longer(c(GA_90m, xGA_90m)) %>% 
+  ggplot(aes(x = year, y = value, color = name)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = c(2018, 2019, 2020)) +
+  facet_wrap(~player_name) +
+  theme(
+    legend.position = 'top',
+    legend.justification = 'left'
+  )
+
+main_FW %>% 
+  group_by(year) %>% 
+  summarise(
+    possible_minutes_played = sum(time)/(94*38*3)
+  )
+
+# Main contributor
+lfc_players %>% 
+  mutate(
+    GA_90m = ((npg+assists)/time)*90,
+    n = tidytext::reorder_within(player_name, GA_90m, year)
+  ) %>% 
+  group_by(year) %>% 
+  slice_max(order_by = GA_90m, n = 5) %>% 
+  ggplot(aes(x = GA_90m, y = n)) +
+  geom_col() +
+  facet_wrap(~year, scales = 'free_y') +
+  tidytext::scale_y_reordered() 
+
+```
+
+## Fabinho
+
+```{r get_fabinho, eval = FALSE}
+fabinho <- get_player_matches_stats(player_id = 3420)
+```
+
+
+```{r fabinho}
+fabinho %>% 
+  filter(year == 2020, position == 'DC') %>% 
+  slice_min(date) %>% 
+  pull(date)
+
+fabinho %>% 
+  filter(year == 2020) %>% 
+  mutate(
+    pts = case_when(
+      h_team == 'Liverpool' & h_goals > a_goals ~ 3, 
+      a_team == 'Liverpool' & h_goals < a_goals ~ 3, 
+                              h_goals == a_goals ~ 1,
+                                              T ~ 0
+    )
+  ) %>% 
+  group_by(position) %>% 
+  summarise(
+    pts = sum(pts)/(n()*3),
+    games = n()
+  )
+
+fabinho %>% 
+  filter(year == 2020) %>% 
+  distinct(match_id) %>% 
+  nrow()
+```
+
+## New players
+
+```{r get_summer_players, eval = FALSE}
+new_players <- list(6854, 229) %>% 
+  map_df(~get_player_matches_stats(.x))
+
+```
+
+
+```{r summer_players}
+new_players %>% 
+  filter(year %in% c(2020, 2019, 2018)) %>%
+  mutate(
+    GA = npg+assists,
+    xGA = npxG+xA
+  ) %>% 
+  group_by(player_name, year) %>% 
+  summarise(
+    possible_time = sum(time)/(n()*90),
+    GA_90m = (sum(GA)/sum(time))*90,
+    xGA_90m = (sum(xGA)/sum(time))*90,
+    kp_90m = (sum(key_passes)/sum(time))*90
+  )
+```
+
+## Shots
+
+```{r get_shots, eval = FALSE}
+match_shots <- rbind(new_players, fabinho) %>%
+  filter(year == 2020) %>%
+  distinct(match_id) %>%
+  pull() %>%
+  map_df(~get_match_shots(.x))
+```
+
+
+```{r shots}
+lfc_shots <- match_shots %>% 
+  filter((h_team == 'Liverpool' & h_a == 'h') | (a_team == 'Liverpool' & h_a == 'a'))
+
+.shooters <- lfc_shots %>% 
+  count(player_id) %>% 
+  slice_max(order_by = n, n = 6) %>% 
+  pull(player_id)
+
+shooters_dataset <- lfc_shots %>% 
+  filter(player_id %in% .shooters) %>% 
+  group_by(player) %>% 
+  nest() %>% 
+  mutate(
+    shotplot = map(
+      data,
+      ~.x %>% 
+        filter(shotType != 'OtherBodyPart') %>% # Mantain consistency over color groups
+        ggplot(aes(x = X*100, y = 100-Y*100, size = xG, color = shotType, alpha = result == 'Goal')) +
+        annotate_pitch() +
+        theme_pitch() +
+        geom_point() +
+        scale_alpha_manual(values = c(.3, 1), guide = FALSE) +
+        coord_flip(xlim = c(60, 101), ylim = c(0, 100))
+    )
+  ) %>% 
+  ungroup()
+
+lfc_shots %>% 
+  group_by(situation) %>% 
+  summarise(
+    xG = sum(xG),
+    n = n(), 
+    goal = sum(result == 'Goal')
+  )
+```
+
+```{r panelset, include=FALSE}
+xaringanExtra::use_panelset()
+```
+
+`r sknifedatar::automagic_tabs2(input_data = shooters_dataset, panel_name = player, shotplot, chunk_props = list(echo = FALSE, code_folding=NULL))`
+
+```{r}
+shooters_dataset$shotplot[[1]]
+```
+
+
+## Hoodiness
+
+```{r hoodiness}
+position_table <- epl %>% 
+  filter(year == 2020) %>% 
+  group_by(team_name) %>% 
+  summarise(pts = sum(pts)) %>% 
+  arrange(desc(pts)) %>% 
+  transmute(team_name, position = 1:n())
+
+match_shots %>% 
+  distinct(h_team, a_team, h_goals, a_goals) %>% 
+  transmute(
+    team_name = if_else(h_team == 'Liverpool', a_team, h_team),
+    pts =  case_when(
+      h_team == 'Liverpool' & h_goals > a_goals ~ 3, 
+      a_team == 'Liverpool' & h_goals < a_goals ~ 3, 
+      h_goals == a_goals ~ 1,
+      T ~ 0
+    )) %>% 
+  left_join(position_table, by = 'team_name') %>% 
+  mutate(
+    position_group = case_when(
+      position <= 6 ~ 'top 6',
+      position >= 14 ~ 'bottom 6',
+      T ~ 'middle table'
+    )
+  ) %>% 
+  group_by(position_group) %>% 
+  summarise(
+    pts = sum(pts),
+    ppts = pts/(3*n())
+  )
+```
+

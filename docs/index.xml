@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>rodserr Logbook</title>
+    <link>https://rodserr.github.io/logbook/</link>
+    <atom:link href="https://rodserr.github.io/logbook/index.xml" rel="self" type="application/rss+xml"/>
+    <description>posts
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Wed, 26 May 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Liverpool 20-21</title>
+      <dc:creator>Rodrigo Serrano</dc:creator>
+      <link>https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21</link>
+      <description>Analysis of 20/21 season of Liverpool FC</description>
+      <category>soccer</category>
+      <category>descriptives</category>
+      <guid>https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21</guid>
+      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21/liverpool-20-21_files/figure-html5/season_comparison-1.png" medium="image" type="image/png" width="1152" height="576"/>
+    </item>
+    <item>
+      <title>Welcome to rodserr Logbook</title>
+      <dc:creator>Nora Jones</dc:creator>
+      <link>https://rodserr.github.io/logbook/posts/welcome</link>
+      <description>Welcome to our new blog, rodserr Logbook. We hope you enjoy 
+reading what we have to say!</description>
+      <guid>https://rodserr.github.io/logbook/posts/welcome</guid>
+      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>
