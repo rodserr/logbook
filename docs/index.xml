@@ -7,26 +7,16 @@
     <description>posts
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 26 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 31 May 2021 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Liverpool 20-21</title>
+      <title>Liverpool 20-21 EPL Performance</title>
       <dc:creator>Rodrigo Serrano</dc:creator>
-      <link>https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21</link>
-      <description>Analysis of 20/21 season of Liverpool FC</description>
-      <category>soccer</category>
-      <category>descriptives</category>
-      <guid>https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21</guid>
-      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21/liverpool-20-21_files/figure-html5/season_comparison-1.png" medium="image" type="image/png" width="1152" height="576"/>
-    </item>
-    <item>
-      <title>Welcome to rodserr Logbook</title>
-      <dc:creator>Nora Jones</dc:creator>
-      <link>https://rodserr.github.io/logbook/posts/welcome</link>
-      <description>Welcome to our new blog, rodserr Logbook. We hope you enjoy 
-reading what we have to say!</description>
-      <guid>https://rodserr.github.io/logbook/posts/welcome</guid>
-      <pubDate>Wed, 26 May 2021 00:00:00 +0000</pubDate>
+      <link>https://rodserr.github.io/logbook/posts/2021-05-31-liverpool-20-21-epl-performance</link>
+      <description>Analysis of EPL 20/21 season of Liverpool FC using tidyverse</description>
+      <category>Sports Analytics</category>
+      <guid>https://rodserr.github.io/logbook/posts/2021-05-31-liverpool-20-21-epl-performance</guid>
+      <pubDate>Mon, 31 May 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://rodserr.github.io/logbook/posts/2021-05-31-liverpool-20-21-epl-performance/liverpool-logo.png" medium="image" type="image/png" width="250" height="250"/>
     </item>
   </channel>
 </rss>

@@ -2,18 +2,18 @@
   "articles": [
     {
       "path": "about.html",
-      "title": "About this blog",
-      "description": "Some additional details about the blog",
+      "title": "Rodrigo Serrano",
+      "description": "R developer and Data Analyst",
       "author": [],
-      "contents": "\n\n\n\n",
-      "last_modified": "2021-05-27T04:17:58+00:00"
+      "contents": "\nYou can contact me on twitter or linkedin\n\n\n\n",
+      "last_modified": "2021-05-31T16:10:37+00:00"
     },
     {
       "path": "index.html",
-      "title": "rodserr Logbook",
+      "title": "posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-27T04:17:58+00:00"
+      "last_modified": "2021-05-31T15:32:23+00:00"
     }
   ],
   "collections": ["posts/posts.json"]

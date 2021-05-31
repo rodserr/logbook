@@ -1,9 +1,8 @@
 ---
-title: "About this blog"
+title: "Rodrigo Serrano"
 description: |
-  Some additional details about the blog
+  R developer and Data Analyst
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+### You can contact me on [twitter](https://twitter.com/Rod_Serrano) or [linkedin](https://www.linkedin.com/in/rodrigo-serrano-morales/)
+

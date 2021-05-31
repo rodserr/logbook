@@ -2,18 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://rodserr.github.io/logbook/about.html</loc>
-    <lastmod>2021-05-26T21:50:33+00:00</lastmod>
+    <lastmod>2021-05-31T16:10:15+00:00</lastmod>
   </url>
   <url>
     <loc>https://rodserr.github.io/logbook/</loc>
-    <lastmod>2021-05-26T21:50:33+00:00</lastmod>
+    <lastmod>2021-05-31T15:24:44+00:00</lastmod>
   </url>
   <url>
-    <loc>https://rodserr.github.io/logbook/posts/2021-05-26-liverpool-20-21/</loc>
-    <lastmod>2021-05-27T04:17:44+00:00</lastmod>
-  </url>
-  <url>
-    <loc>https://rodserr.github.io/logbook/posts/welcome/</loc>
-    <lastmod>2021-05-26T21:50:43+00:00</lastmod>
+    <loc>https://rodserr.github.io/logbook/posts/2021-05-31-liverpool-20-21-epl-performance/</loc>
+    <lastmod>2021-05-31T16:48:04+00:00</lastmod>
   </url>
 </urlset>

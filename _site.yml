@@ -4,6 +4,7 @@ description: |
   posts
 base_url: https://rodserr.github.io/logbook/
 output_dir: "docs"
+# theme: theme.css
 navbar:
   search: false
   source_url: https://github.com/rodserr/logbook
@@ -12,11 +13,16 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-output: distill::distill_article
+output:
+  distill::distill_article:
+    css: styles.css
+    includes:
+      in_header: utterances.html
 collections:
   posts:
     autors_metadata: true
     categories: true
     categories_metadata: true
-    disqus: logbook
+    # disqus: logbook
     share: [twitter, linkedin]
+    citations: true

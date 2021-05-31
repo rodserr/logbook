@@ -87,26 +87,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>rodserr Logbook</title>
+  <title>rodserr Logbook: posts</title>
 
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="rodserr Logbook"/>
+  <meta property="og:title" content="rodserr Logbook: posts"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="rodserr Logbook"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="rodserr Logbook"/>
+  <meta property="twitter:title" content="rodserr Logbook: posts"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["rodserr Logbook"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1785,8 +1785,40 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+   
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (!/posts/.test(location.pathname)) {
+        return;
+      }
+
+      var script = document.createElement("script");
+      script.src = "https://utteranc.es/client.js";
+      script.setAttribute("repo", "rodserr/logbook");
+      script.setAttribute("issue-term", "og:title");
+      script.setAttribute("crossorigin", "anonymous");
+      script.setAttribute("label", "comment_thread");
+
+      /* wait for article to load, append script to article element */
+      var observer = new MutationObserver(function (mutations, observer) {
+        var article = document.querySelector("d-article");
+        if (article) {
+          observer.disconnect();
+          /* HACK: article scroll */
+          article.setAttribute("style", "overflow-y: hidden");
+          article.appendChild(script);
+        }
+      });
+
+      observer.observe(document.body, { childList: true });
+    });
+  </script>
+  <style type="text/css">
+  .posts-list .post-preview .thumbnail img { width: 50%; display: block; }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -1795,7 +1827,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"rodserr Logbook","authors":[]}
+{"title":"posts","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1953,43 +1985,24 @@ function init_posts_list() {
 
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
-<h1 class="posts-list-caption" data-caption="rodserr Logbook">rodserr Logbook</h1>
-<a href="posts/2021-05-26-liverpool-20-21/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["soccer","descriptives"]}</script>
+<h1 class="posts-list-caption" data-caption="posts">posts</h1>
+<a href="posts/2021-05-31-liverpool-20-21-epl-performance/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["Sports Analytics"]}</script>
 <div class="metadata">
-<div class="publishedDate">May 26, 2021</div>
+<div class="publishedDate">May 31, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Rodrigo Serrano</div>
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2021-05-26-liverpool-20-21/liverpool-20-21_files/figure-html5/season_comparison-1.png"/>
+<img src="posts/2021-05-31-liverpool-20-21-epl-performance/liverpool-logo.png"/>
 </div>
 <div class="description">
-<h2>Liverpool 20-21</h2>
+<h2>Liverpool 20-21 EPL Performance</h2>
 <div class="dt-tags">
-<div class="dt-tag">soccer</div>
-<div class="dt-tag">descriptives</div>
+<div class="dt-tag">Sports Analytics</div>
 </div>
-<p>Analysis of 20/21 season of Liverpool FC</p>
-</div>
-</a>
-<a href="posts/welcome/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
-<div class="metadata">
-<div class="publishedDate">May 26, 2021</div>
-<div class="dt-authors">
-<div class="dt-author">Nora Jones</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Welcome to rodserr Logbook</h2>
-<div class="dt-tags"></div>
-<p>Welcome to our new blog, rodserr Logbook. We hope you enjoy 
-reading what we have to say!</p>
+<p>Analysis of EPL 20/21 season of Liverpool FC using tidyverse</p>
 </div>
 </a>
 </div>
@@ -1998,15 +2011,11 @@ reading what we have to say!</p>
 <h3>Categories</h3>
 <ul>
 <li>
-<a href="#category:articles">articles</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#category:descriptives">descriptives</a>
+<a href="#category:Articles">Articles</a>
 <span class="category-count">(1)</span>
 </li>
 <li>
-<a href="#category:soccer">soccer</a>
+<a href="#category:Sports_Analytics">Sports Analytics</a>
 <span class="category-count">(1)</span>
 </li>
 </ul>
@@ -2019,7 +2028,7 @@ reading what we have to say!</p>
 <!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>rodserr Logbook</h1>
+<h1>posts</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 
