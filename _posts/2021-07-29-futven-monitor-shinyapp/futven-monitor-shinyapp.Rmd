@@ -1,0 +1,33 @@
+---
+title: "FUTVEN-Monitor shinyapp"
+description: |
+  Dashboard Monitoring Venezuelan football players performing abroad.
+author:
+  - name: Rodrigo Serrano
+    url: https://rodserr.github.io/logbook
+date: 2021-07-29
+preview: futven-preview.png
+categories:
+  - Sports Analytics
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Monitoring Venezuelan football players performing abroad, data owned by [![fbreflogo](fbref-logo-transparent.png?display=inline-block)](https://fbref.com/en/) obtained using [`rvest`](https://github.com/tidyverse/rvest) and [`worldfootballR`](https://github.com/JaseZiv/worldfootballR)
+
+Data is stored in BigQuery tabels using [`bigrquery`](https://github.com/r-dbi/bigrquery) package
+
+Three panels exist in the app:
+
+- **Eliminatorias:** Basic stats of Venezuelan National team players perform in the Qatar 2022 World cup qualifying 
+
+- **Venex:** Goals, assists and minutes played in regular (current or last) season of active players performing abroad
+
+- **Scout:** Schedule of `venex` players for the next 7 days. Summary of performance in the last 7 days
+
+
+Check ![shinylogo](shiny-logo-transparent.png?display=inline-block)  at <https://rodserr.shinyapps.io/futven/>.
+
+Code at <https://github.com/rodserr/futven-monitor>
+

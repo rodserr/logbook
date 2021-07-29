@@ -1,5 +1,26 @@
 [
   {
+    "path": "posts/2021-07-29-futven-monitor-shinyapp/",
+    "title": "FUTVEN-Monitor shinyapp",
+    "description": "Dashboard Monitoring Venezuelan football players performing abroad.",
+    "author": [
+      {
+        "name": "Rodrigo Serrano",
+        "url": "https://rodserr.github.io/logbook"
+      }
+    ],
+    "date": "2021-07-29",
+    "categories": [
+      "Sports Analytics"
+    ],
+    "contents": "\nMonitoring Venezuelan football players performing abroad, data owned by  obtained using rvest and worldfootballR\nData is stored in BigQuery tabels using bigrquery package\nThree panels exist in the app:\nEliminatorias: Basic stats of Venezuelan National team players perform in the Qatar 2022 World cup qualifying\nVenex: Goals, assists and minutes played in regular (current or last) season of active players performing abroad\nScout: Schedule of venex players for the next 7 days. Summary of performance in the last 7 days\nCheck  at https://rodserr.shinyapps.io/futven/.\nCode at https://github.com/rodserr/futven-monitor\n\n\n\n",
+    "preview": "posts/2021-07-29-futven-monitor-shinyapp/futven-preview.png",
+    "last_modified": "2021-07-29T21:06:09+00:00",
+    "input_file": "futven-monitor-shinyapp.knit.md",
+    "preview_width": 1896,
+    "preview_height": 979
+  },
+  {
     "path": "posts/2021-05-31-liverpool-20-21-epl-performance/",
     "title": "Liverpool 20-21 EPL Performance",
     "description": "Analysis of EPL 20/21 season of Liverpool FC using tidyverse",

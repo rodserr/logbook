@@ -7,7 +7,17 @@
     <description>posts
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 31 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>FUTVEN-Monitor shinyapp</title>
+      <dc:creator>Rodrigo Serrano</dc:creator>
+      <link>https://rodserr.github.io/logbook/posts/2021-07-29-futven-monitor-shinyapp</link>
+      <description>Dashboard Monitoring Venezuelan football players performing abroad.</description>
+      <category>Sports Analytics</category>
+      <guid>https://rodserr.github.io/logbook/posts/2021-07-29-futven-monitor-shinyapp</guid>
+      <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://rodserr.github.io/logbook/posts/2021-07-29-futven-monitor-shinyapp/futven-preview.png" medium="image" type="image/png" width="1896" height="979"/>
+    </item>
     <item>
       <title>Liverpool 20-21 EPL Performance</title>
       <dc:creator>Rodrigo Serrano</dc:creator>
