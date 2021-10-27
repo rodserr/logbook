@@ -7,7 +7,17 @@
     <description>posts
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 29 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 27 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>EPL Standings - table contest 2021</title>
+      <dc:creator>Rodrigo Serrano</dc:creator>
+      <link>https://rodserr.github.io/logbook/posts/2021-10-27-epl-standings-table-contest-2021</link>
+      <description>Making a Selectable and Editable DT::DataTable in Shiny.</description>
+      <category>Shiny</category>
+      <guid>https://rodserr.github.io/logbook/posts/2021-10-27-epl-standings-table-contest-2021</guid>
+      <pubDate>Wed, 27 Oct 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://rodserr.github.io/logbook/posts/2021-10-27-epl-standings-table-contest-2021/epl-logo-solid.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>FUTVEN-Monitor shinyapp</title>
       <dc:creator>Rodrigo Serrano</dc:creator>

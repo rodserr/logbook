@@ -1,0 +1,202 @@
+---
+title: "EPL Standings - table contest 2021"
+description: |
+  Making a Selectable and Editable DT::DataTable in Shiny.
+author:
+  - name: Rodrigo Serrano
+    url: https://rodserr.github.io/logbook
+date: 2021-10-27
+preview: epl-logo-solid.jpg
+categories:
+  - Shiny
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = F, include = T)
+```
+
+I will document the making of a selectable and editable DT::dataTable in shiny. This will also be my submission to participate on RStudio table contest for 2021. I will use `understatr` package to `get_league_teams_stats` for the 2021/2022 Premier League and build a standings table. This table will be selectable in order to display cumulative xG for the selected team, and editable to add comments for the team in a Total xG plot. Visit shiny [here](https://rodserr.shinyapps.io/epl-standings/)
+
+### Packages
+
+```{r}
+# Libraries----
+library(shiny)
+library(understatr)
+library(tidyverse)
+library(DT) 
+library(ggrepel) # include automated positioned text in ggplot
+library(ggimage) # include team logo in ggplot
+library(shinycssloaders) # Nice spinner to show while loading outputs
+library(bslib) # to themed the shiny
+library(thematic) # to pass the bslib theme to ggplots
+```
+
+### Getting Data
+
+Let's use `understatr::get_league_teams_stats` to retrieve results for every team in the 2021/2022 Premier League. `team_logo.csv` contains image addresses for the logo of every team
+
+```{r}
+epl_2021 <- get_league_teams_stats(league_name = "EPL", year = 2021)
+team_logo <- read_csv('table-contest-2021/team_logo.csv')
+```
+
+Let's summarise **epl_2021** and join the URL of the logos, which will be our standing table and also our dataframe to display Total xG plot. We also made the cumulative xG dataframe that will be team filtered every time we select a row in the standings table to display only the curve for the selected team
+
+```{r}
+# Standings
+epl_standings <- epl_2021 %>% 
+    group_by(team_name) %>% 
+    summarise(
+        Loses = sum(loses),
+        Draws = sum(draws),
+        Wins = sum(wins),
+        Pts = sum(pts),
+        GD = sum(scored)-sum(missed),
+        Comment = '',
+        xG = sum(xG),
+        xGA = sum(xGA),
+        .groups = 'drop'
+    ) %>% 
+    arrange(desc(Pts)) %>% 
+    left_join(team_logo) %>% 
+    mutate(Team = sprintf('<img src="%s" height="28"></img>', logo)) %>% 
+    relocate(Team)
+
+# Cumulative xG
+roll_xG <- epl_2021 %>% 
+    group_by(team_name) %>%
+    arrange(team_name, date) %>% 
+    transmute(
+        match_day = 1:n(),
+        team_name,
+        xG = cumsum(xG),
+        xGA = cumsum(xGA),
+        G = cumsum(scored),
+        GA = cumsum(missed)
+    ) %>% 
+    ungroup() %>% 
+    pivot_longer(contains('G')) %>% 
+    mutate(type = if_else(name %in% c('G', 'GA'), 'real', 'expected'))
+
+```
+
+### Setting Reactivity and observes
+
+The first thing we need to do is create a `reactiveValues` and set an `observe` to catch the value every time the source dataframe changes, in this case, it would not change since *epl_standings* is static, but this would be necessary if *epl_standings* were reactive. Also, we need to create a `dataTableProxy` to store the previous value for the main dataTable -'standings' is our `DT::dataTable` that we will create later on-
+
+```{r}
+# Create Empty Reactive Value
+table_reactive_value <- reactiveValues(df = NULL)
+
+# observe in case of epl_standings would be reactive
+observe({
+  table_reactive_value$df <- epl_standings
+})
+
+# Creating table proxy to store previous values
+standings_proxy <- dataTableProxy('standings')
+```
+
+Next, we set the `observeEvent` that in the event of a cell edit, will update the value of the `reactiveValue` that stores the copy of the source dataframe. Note the event will always be an input of the nameOfTheDT`_cell_edit` 
+
+```{r}
+# Update table
+observeEvent(input$standings_cell_edit, {
+  info = input$standings_cell_edit
+  str(info)
+  
+  # Location and value of the edit
+  i = info$row
+  j = info$col 
+  v = info$value
+  
+  # Coerce value of the same data type and replace proxy
+  table_reactive_value$df[i, j] <- DT::coerceValue(v, pull(table_reactive_value$df[i, j]))
+  aux_table <- table_reactive_value$df
+  replaceData(standings_proxy, aux_table, resetPaging = FALSE, rownames = T)
+})
+```
+
+Now lets build the `DT::dataTable`. The only column that will not be selectable is *Comment* which is column number 8, so we build a matrix of nrow(epl_standings) rows and two columns that maps the cells of epl_standings that will not be selectable. Column one and column two indicates row number and column number respectively. All values are negative, in that way we specify the no selectable parts of the table
+
+The editable range is easier to set with the disable argument. Note that there are 3 columns that we do not want to display in the table, we do not use `dplyr::select` to remove them, instead, we set `columnDefs` argument otherwise would be a mismatch between the reactiveValue and the dataTable columns
+
+```{r}
+output$standings <- DT::renderDataTable({
+  
+  ncolumns <- ncol(epl_standings)
+  nrows <- nrow(epl_standings)
+  unselectable_matrix <- matrix(c(-(1:nrows), rep(-8, nrows)), ncol = 2)
+  
+  epl_standings %>%
+    DT::datatable(
+      rownames = T,
+      style = 'bootstrap',
+      selection = list(mode = 'single', target = "cell", selectable = unselectable_matrix),
+      editable = list(target = "cell", disable = list(columns = 1:7)),
+      escape = F,
+      options = list(
+        searching = F,
+        paging = F,
+        info = F,
+        columnDefs = list(
+          list(visible=FALSE, targets = c(9,10,11)),
+          list(className = 'dt-center', targets = '_all')
+        )
+      )
+    )
+  
+})
+```
+
+Now we use the reactiveValue to build the output with the dataframe edited, in this case, a ggplot
+
+```{r}
+output$total_xG <- renderPlot({
+  
+  table_reactive_value$df %>%
+    ggplot(aes(x = xG, y = xGA, label = Comment)) +
+    geom_image(aes(image = logo), asp = 10/5, size = .04) +
+    geom_text_repel(box.padding = 1, max.overlaps = Inf, size = 4,
+                    min.segment.length = 0, segment.curvature = -.5) +
+    labs(x = 'Expected Goal (xG)', y = 'Expected Goal Against (xGA)')
+  
+})
+```
+
+
+### ShowModal of selected row
+
+We set a reactive that activates when a `_cells_selected` and stores the name of the team in the selected row. With the reactive `team_selected` we filter the dataframe and build the ggplot. Finally, we set the `observeEvent` that triggers the modal based on the dataTable`_cells_selected`
+
+```{r}
+team_selected <- reactive({
+  selected_team <- epl_standings %>% 
+    slice(input$standings_cells_selected[1,1]) %>% 
+    pull(team_name)
+})
+
+# Modal to display cumulative xG
+observeEvent(
+  input$standings_cells_selected,
+  {
+    if(nrow(input$standings_cells_selected)>0){
+      showModal(
+        modalDialog(
+          title = paste0(team_selected(), " Cumulative xG"),
+          easyClose = T,
+          size = 'l',
+          plotOutput('rolling_xG')
+        )
+      ) 
+    }
+  }
+)
+
+```
+
