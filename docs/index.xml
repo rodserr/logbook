@@ -7,7 +7,15 @@
     <description>posts
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 27 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Tutorial: Replicating data to BigQuery</title>
+      <dc:creator>Rodrigo Serrano</dc:creator>
+      <link>https://rodserr.github.io/logbook/posts/2022-02-10-tutorial-replicating-data-to-bigquery</link>
+      <description>Quick Tutorial on how to automate data replication to BigQuery using Google Cloud Functions in order to build BI/ML tools</description>
+      <guid>https://rodserr.github.io/logbook/posts/2022-02-10-tutorial-replicating-data-to-bigquery</guid>
+      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>EPL Standings - table contest 2021</title>
       <dc:creator>Rodrigo Serrano</dc:creator>
