@@ -19,4 +19,4 @@ about:
 
 Actuarial science grad turned data enthusiast! I leverage my analytical background across data analysis, science, and engineering. Lately, spatial data and mapping have piqued my interest.
 
-I build visualizations and interactive tools, empowering decision-making in finance, recruiting, and urban tech.  Experience and a curious mind fuel my work, not just degrees. in this blog I share my projects, thoughts, and learnings.
+I build visualizations and interactive tools, empowering decision-making in finance, recruiting, and urban tech.  Experience and a curious mind fuel my work, not just degrees. In this blog I share my projects, thoughts, and learnings.
