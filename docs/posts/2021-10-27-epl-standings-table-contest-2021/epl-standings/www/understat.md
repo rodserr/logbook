@@ -1,1 +1,0 @@
-Data Source: [understat.com](https://understat.com/) trough [understatr](https://ewenme.github.io/understatr/index.html) package

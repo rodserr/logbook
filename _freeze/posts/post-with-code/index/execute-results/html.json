@@ -1,0 +1,15 @@
+{
+  "hash": "0096dc5dd3823b3d4aa8d122f22b8b73",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Post With Code\"\nauthor: \"Harlow Malloc\"\ndate: \"2024-05-16\"\ncategories: [news, code, analysis]\nimage: \"image.jpg\"\n---\n\n\nThis is a post with executable code.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(readr)\nlibrary(here)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nhere() starts at /home/rodrigo/Documents/example\n```\n\n\n:::\n\n```{.r .cell-code}\nhere::i_am('posts/post-with-code/index.qmd')\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nhere() starts at /home/rodrigo/Documents/example\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmtcars %>% \n  write_csv('posts/post-with-code/mtcars.csv')\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmtcars2 <- read_csv(here('posts/post-with-code/mtcars.csv'))\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRows: 32 Columns: 11\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (11): mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n\n\n:::\n\n```{.r .cell-code}\n# plot(mtcars2)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

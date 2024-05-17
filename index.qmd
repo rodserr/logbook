@@ -1,0 +1,14 @@
+---
+title: ""
+listing:
+  id: myposts
+  contents: posts
+  sort: "date desc"
+  type: grid
+  fields: [image, date, title, description]
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: false
+---

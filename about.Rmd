@@ -1,8 +1,0 @@
----
-title: "Rodrigo Serrano"
-description: |
-  R developer and Data Analyst
----
-
-### You can contact me on [twitter](https://twitter.com/Rod_Serrano) or [linkedin](https://www.linkedin.com/in/rodrigo-serrano-morales/)
-

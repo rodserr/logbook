@@ -4,3 +4,6 @@
 .Ruserdata
 *.csv
 rsconnect/
+/.quarto/
+/_site/
+renv/
