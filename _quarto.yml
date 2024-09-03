@@ -6,6 +6,7 @@ website:
   title: "logbook"
   navbar:
     right:
+      - index.qmd
       - about.qmd
       - icon: github
         href: https://github.com/rodserr
@@ -13,8 +14,9 @@ website:
         href: https://www.linkedin.com/in/rodrigo-serrano-morales/
 format:
   html:
-    theme: lux
-    css: styles.css
+    theme: 
+      - lux
+      - styles.scss
 
 editor: source
 

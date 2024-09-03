@@ -2,11 +2,9 @@
 title: "Tutorial: Replicating data to BigQuery"
 description: |
   Quick Tutorial on how to automate data replication to BigQuery using Google Cloud Functions in order to build BI/ML tools
-author:
-  - name: Rodrigo Serrano
-    url: https://rodserr.github.io/logbook
 date: 2022-02-10
-categories: [ETL, DataWarehouse]
+image: bq.png
+categories: [etl]
 ---
 
 

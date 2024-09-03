@@ -7,7 +7,7 @@ author:
     url: https://rodserr.github.io/logbook
 date: 2021-07-29
 image: futven-preview.png
-categories: [R, Shiny, Analytics]
+categories: [shiny]
 ---
 
 Monitoring Venezuelan football players performing abroad, data owned by [![fbreflogo](fbref-logo-transparent.png?display=inline-block)](https://fbref.com/en/) obtained using [`rvest`](https://github.com/tidyverse/rvest) and [`worldfootballR`](https://github.com/JaseZiv/worldfootballR)

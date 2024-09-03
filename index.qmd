@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Posts"
 listing:
   id: myposts
   contents: posts

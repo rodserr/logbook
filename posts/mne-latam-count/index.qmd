@@ -1,0 +1,224 @@
+---
+title: "MNE"
+description: |
+  MNE
+date: 2024-08-28
+draft: true
+categories: [ETL, DataWarehouse]
+---
+
+https://www.oecd.org/en/data/dashboards/oecd-unsd-multinational-enterprise-information-platform.html
+
+```{r setup}
+#| echo: false
+#| results: 'hide'
+#| include: true
+
+knitr::opts_chunk$set(eval = FALSE)
+.post_path <- 'posts/mne-latam-count'
+here::i_am(glue::glue('{.post_path}/index.qmd'))
+renv::use(lockfile = here::here(.post_path, "renv.lock"))
+```
+
+```{r libraries}
+#| results: 'hide'
+
+library(dplyr)
+library(readxl)
+library(readr)
+library(janitor)
+library(here)
+library(ggplot2)
+library(sf)
+```
+
+```{r read_data}
+#| results: 'hide'
+
+readxl::excel_sheets(here(.post_path, 'Global-Register_2022.xlsx'))
+
+global_register <- read_xlsx(
+  here(.post_path, 'Global-Register_2022.xlsx'),
+  sheet = 'Group Register'
+) %>% 
+  janitor::clean_names()
+
+country_code <- read_xlsx(
+  here(.post_path, 'Global-Register_2022.xlsx'),
+  sheet = 'Country_Code_mapping'
+) %>% 
+  janitor::clean_names()
+```
+
+```{r filter_america_subs}
+continent_iso3 <- country_code %>% 
+  select(
+    iso3 = iso_alpha3_code,
+    region_name
+  )
+
+# Iso3 codes of American countries
+america_code <- country_code %>% 
+  filter(
+    region_name == 'Americas',
+    !un_country_or_area1 %in% c('Canada', 'United States of America', 'United States Virgin Islands')
+  )
+
+# Iso3 of MNE parents
+parents_mne_country <- global_register %>% 
+  filter(heirarchy == 'MNE Head') %>% 
+  distinct(parent_mne, parent_iso3 = iso3)
+
+# Subsidiaries by country and parent country
+america_subs <- global_register %>% 
+  filter(
+    heirarchy != 'MNE Head',
+    iso3 %in% america_code$iso_alpha3_code
+  ) %>% 
+  distinct(parent_mne, iso3) %>% 
+  inner_join(
+    parents_mne_country, 
+    by = 'parent_mne',
+    relationship = "many-to-many"
+  ) %>% 
+  count(parent_iso3, iso3, name = 'n_subsidiary')
+```
+
+```{r country_coords}
+country_coord <- readr::read_csv(
+  'https://gist.githubusercontent.com/tadast/8827699/raw/61b2107766d6fd51e2bd02d9f78f6be081340efc/countries_codes_and_coordinates.csv',
+  show_col_types = FALSE
+)
+
+country_coord_clean <- country_coord %>% 
+  distinct(
+    iso3 = `Alpha-3 code`, 
+    lat = `Latitude (average)`, 
+    lng = `Longitude (average)`
+  )
+```
+
+```{r country_code}
+segments <- america_subs %>%
+    # Join subsidiary-country coordenates
+  left_join(
+    country_coord_clean,
+    by = c('iso3')
+  ) %>% 
+    # Join parent-country coordenates
+  left_join(
+    country_coord_clean,
+    by = c('parent_iso3' = 'iso3'),
+    suffix = c("", "_parent")
+  ) %>% 
+    # Join parent-country Continents
+  left_join(
+    continent_iso3,
+    by = c('parent_iso3' = 'iso3')
+  ) %>% 
+    # Average coordinates of continents
+  mutate(
+    .by = region_name,
+    lat_parent = mean(lat_parent),
+    lng_parent = mean(lng_parent)
+  ) %>% 
+    # Group subsidiaries by Parent Continent and iso3
+  summarise(
+    .by = c(region_name, iso3, lat, lng, lat_parent, lng_parent),
+    n_subsidiary = sum(n_subsidiary)
+  ) %>% 
+  mutate(
+    # Center America countries (targets)
+    lng = lng + 50,
+    # Center eastern continets
+    lng_parent = if_else(region_name %in% c('Asia', 'Oceania'), lng_parent-80, lng_parent)
+  ) %>% 
+    # Keep main American countries by n_subsidiary
+  filter(
+    .by = iso3,
+    sum(n_subsidiary) > 50
+  )
+
+segments %>% filter(iso3 == 'VEN')
+
+subs <- segments %>% 
+  summarise(
+    .by = c(iso3, lat, lng),
+    n_subsidiary = sum(n_subsidiary)
+  )
+
+parents <- segments %>% 
+  summarise(
+    .by = c(region_name, lat_parent, lng_parent),
+    n_subsidiary = sum(n_subsidiary)
+  )
+
+circle <- st_point(x = c(0, 0)) %>%
+  st_buffer(dist = 6371000) %>%
+  st_sfc(crs = ortho) %>%
+  st_transform(crs = 4326)
+
+world_ortho <- st_cast(world, 'MULTIPOLYGON') %>%
+  st_cast('POLYGON', do_split = TRUE) %>%
+  st_transform(crs = ortho)
+
+spData::w
+```
+
+```{r country_code2}
+.region_colors <- c('Americas'="#DB3A2F", 'Europe'="#275D8E", 'Asia'="#DC942F", 'Africa'="#698E7C", 'Oceania'="#902A57")
+ggplot() +
+  geom_curve(
+    data = segments,
+    curvature = .3,
+    angle = 90,
+    ncp = 35,
+    alpha = .7,
+    aes(
+      x = lng_parent, y = lat_parent, 
+      xend = lng, yend = lat,
+      linewidth = n_subsidiary,
+      color = region_name,
+      group = iso3
+    )
+  ) +
+    # Continets
+  geom_point(
+    data = parents,
+    aes(x = lng_parent, y = lat_parent, size = n_subsidiary, color = region_name), 
+    alpha = 1
+  ) +
+  geom_text(
+    data = parents,
+    aes(x = lng_parent, y = lat_parent, label = region_name),
+    color = 'black'
+  ) +
+    # American-Subsidiaries
+  geom_point(
+    data = subs,
+    aes(x = lng, y = lat, size = n_subsidiary), 
+    alpha = 1,
+    color = 'gray40'
+  ) +
+  geom_text(
+    data = subs,
+    aes(x = lng, y = lat, label = iso3),
+    color = 'white'
+  ) +
+  theme_void() +
+  scale_size(range = c(5, 30)) +
+  # scale_alpha(range = c(.5, 2)) +
+  scale_color_manual(values = .region_colors) +
+  scale_linewidth(range = c(1, 6)) +
+  guides(alpha = 'none', size = 'none', linewidth = 'none', color = 'none') +
+  annotate("text", x = 1.05, y = -45, label = "Source: | Graphic: Georgios Karamanis", hjust = 0, family = "IBM Plex Sans", size = 4) +
+  theme(
+  )
+```
+
+```{r snapshot}
+#| eval: false
+
+renv::snapshot(lockfile = here::here(.post_path, "renv.lock"))
+```
+

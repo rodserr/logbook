@@ -2,8 +2,15 @@
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
 *.csv
 rsconnect/
 /.quarto/
 /_site/
 renv/
+
+posts/**/*.json
+posts/**/*.csv
+posts/**/*.RData
+posts/**/*.xlsx
+posts/**/*.xls

@@ -6,3 +6,14 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+
+# Author name of all blog posts
+author:
+  - name: Rodrigo Serrano
+    url: https://rodserr.github.io/logbook
+
+# Table of content settings
+toc: true
+toc-depth: 3
+
+page-layout: article

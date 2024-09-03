@@ -7,7 +7,7 @@ author:
     url: https://rodserr.github.io/logbook
 date: 2021-10-27
 image: epl-logo-solid.jpg
-categories: [R, Shiny, Analytics]
+categories: [viz]
 ---
 
 

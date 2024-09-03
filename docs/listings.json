@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/strava-route-visualization/index.html",
       "/posts/replicating-data-to-bigquery/index.html",
       "/posts/epl-standings-table-contest-2021/index.html",
       "/posts/futven-monitor-shinyapp/index.html",
